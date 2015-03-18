@@ -1,5 +1,6 @@
 <?php namespace Dubb\Repos;
 
+use App\Entities\User;
 use Dubb\Contracts\AuthInterface;
 use Dubb\Contracts\Client;
 use Illuminate\Support\Facades\Hash;

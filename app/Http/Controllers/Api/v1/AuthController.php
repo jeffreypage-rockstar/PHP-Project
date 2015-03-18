@@ -2,7 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Dubb\Repos\EloquentAuthRepository;
+use Dubb\Repos\EloquentAuthRepository as EloquentAuthRepository;
 use Response;
 
 class AuthController extends Controller {
