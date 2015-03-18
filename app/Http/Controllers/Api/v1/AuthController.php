@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Dubb\Repos\EloquentAuthRepository;
 use Response;
 
 class AuthController extends Controller {
@@ -9,6 +10,16 @@ class AuthController extends Controller {
 	public function getToken(Requests\GetOauthToken $request)
 	{
 		return $request->response([]);
+	}
+
+	public function signUp(Requests\SignUp $request, EloquentAuthRepository $user)
+	{
+		try {
+
+			return \Response::make($user->signUpIfNotExisting($request->all()), 400);
+		}catch(\Exception $e){
+			$request->response($e->getMessage());
+		}
 	}
 
 }
