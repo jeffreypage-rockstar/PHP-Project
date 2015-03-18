@@ -15,8 +15,11 @@ class AuthController extends Controller {
 	public function signUp(Requests\SignUp $request, EloquentAuthRepository $user)
 	{
 		try {
-
-			return \Response::make($user->signUpIfNotExisting($request->all()), 400);
+			$template = [
+				'error'=> false,
+				'response' => $user->signUpIfNotExisting($request->all())
+			];
+			return \Response::make($template, 200);
 		}catch(\Exception $e){
 			$request->response([$e->getMessage()]);
 		}
