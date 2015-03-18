@@ -15,13 +15,13 @@ class CreateUsersTable extends Migration {
 		Schema::create('users', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('name');
+			$table->string('username')->unique()->nullable();
 			$table->string('first')->nullable();
 			$table->string('last')->nullable();
 			$table->text('bio')->nullable();
 			$table->string('zip')->nullable();
 			$table->string('city')->nullable();
-			$table->string('state');
+			$table->string('state')->nullable();
 			$table->string('country_code')->nullable();
 			$table->string('country')->nullable();
 			$table->string('phone')->nullable();
@@ -34,7 +34,7 @@ class CreateUsersTable extends Migration {
 			$table->decimal('response_time_hours')->default(0.00);
 			$table->string('timezone')->nullable();
 			$table->string('email')->unique();
-			$table->string('password', 60);
+			$table->string('password', 60)->nullable();
 			$table->boolean('is_admin')->default(false);
 			$table->rememberToken();
 			$table->timestamps();

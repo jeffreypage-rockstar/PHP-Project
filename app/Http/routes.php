@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
+Route::group(['prefix'=> 'api/v1'], function(){
+	Route::post('oauth/token', 'Api\v1\AuthController@getToken');
+});
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
