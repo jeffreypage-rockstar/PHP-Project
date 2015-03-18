@@ -2,7 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Dubb\Repos\EloquentAuthRepository as EloquentAuthRepository;
+use App\Dubb\Repos\EloquentAuthRepository as EloquentAuthRepository;
 use Response;
 
 class AuthController extends Controller {
@@ -18,7 +18,7 @@ class AuthController extends Controller {
 
 			return \Response::make($user->signUpIfNotExisting($request->all()), 400);
 		}catch(\Exception $e){
-			$request->response($e->getMessage());
+			$request->response([$e->getMessage()]);
 		}
 	}
 

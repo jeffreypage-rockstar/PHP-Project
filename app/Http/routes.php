@@ -20,7 +20,7 @@ Route::group(['prefix'=> 'api/v1'], function(){
 	Route::post('auth/test', 'Api\v1\AuthController@test');
 
 	// SignUp
-	Route::post('auth/signup', 'Api\v1\AuthController@signUp');
+		Route::post('auth/signup', 'Api\v1\AuthController@signUp');
 });
 
 

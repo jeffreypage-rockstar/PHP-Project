@@ -1,8 +1,8 @@
-<?php namespace Dubb\Repos;
+<?php namespace App\Dubb\Repos;
 
 use App\Entities\User;
-use Dubb\Contracts\AuthInterface;
-use Dubb\Contracts\Client;
+use App\Dubb\Contracts\AuthInterface;
+use App\Dubb\Contracts\Client;
 use Illuminate\Support\Facades\Hash;
 
 class EloquentAuthRepository implements AuthInterface
@@ -47,13 +47,14 @@ class EloquentAuthRepository implements AuthInterface
      */
     private function _loginAttempt($request, $user)
     {
-        if (Hash::make($request['password']) == $user->password) {
+        if ($user->password != '' && Hash::make($request['password']) == $user->password) {
             return $user;
         }
-        foreach (['facebook_token', 'gplus_token', 'twitter_token'] as $token)
+        foreach (['facebook_token', 'gplus_token', 'twitter_token'] as $token) {
             if (isset($request[$token]) && ($request[$token] == $user->getAttribute($token))) {
                 // social login attempt successful
                 return $user;
             }
+        }
     }
 }

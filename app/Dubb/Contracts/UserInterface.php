@@ -1,4 +1,4 @@
-<?php Dubb\Contracts;
+<?php App\Dubb\Contracts;
 
 interface UserInterface
 {

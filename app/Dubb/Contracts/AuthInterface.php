@@ -1,4 +1,4 @@
-<?php namespace Dubb\Contracts;
+<?php namespace App\Dubb\Contracts;
 
 interface AuthInterface
 {
