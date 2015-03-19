@@ -25,7 +25,11 @@ class SignUp extends Request {
 			'email'=>'required|email',
 			'first'=>'required',
 			'last'=> 'required',
-			'username' => 'sometimes|required'
+			'username' => 'sometimes|required',
+			'password' => 'sometimes|required_without_all: facebook_token, twitter_token, gplus_token',
+			'facebook_token' => 'sometimes|required_without_all: password, twitter_token, gplus_token',
+			'twitter_token' => 'sometimes|required_without_all: password, facebook_token, gplus_token',
+			'gplus_token' => 'sometimes|required_without_all: password, twitter_token, facebook_token',
 		];
 	}
 
@@ -40,13 +44,8 @@ class SignUp extends Request {
 
 	public function response(array $errors)
 	{
-			$template = [
-				'error' => true,
-				'response' => [
-					$this->formatErrors($this->getValidatorInstance())
-				]
-			];
-			return \Response::make($template, 400);
+
+		return $this->formatResponse($this->formatErrors($this->getValidatorInstance()), true, 400);
 
 	}
 }

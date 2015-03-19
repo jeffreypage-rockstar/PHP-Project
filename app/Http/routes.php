@@ -17,10 +17,11 @@ Route::group(['prefix'=> 'api/v1'], function(){
 	// Obtain Oauth Token
 	Route::post('oauth/token', 'Api\v1\AuthController@getToken');
 
-	Route::post('auth/test', 'Api\v1\AuthController@test');
-
 	// SignUp
-		Route::post('auth/signup', 'Api\v1\AuthController@signUp');
+	Route::post('auth/signup', 'Api\v1\AuthController@signUp');
+
+	// SignIn
+	Route::post('auth/signin', 'Api\v1\AuthController@signIn');
 });
 
 
