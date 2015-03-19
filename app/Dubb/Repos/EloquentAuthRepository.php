@@ -1,5 +1,6 @@
 <?php namespace App\Dubb\Repos;
 
+use App\Dubb\Exceptions\ApiException;
 use App\Dubb\Exceptions\GenericException;
 use App\Entities\User;
 use App\Dubb\Contracts\AuthInterface;
@@ -112,6 +113,6 @@ class EloquentAuthRepository implements AuthInterface
            return $user;
        }
 
-       throw new GenericException('Authentication Failed');
+       throw new ApiException('Authentication Failed');
     }
 }
