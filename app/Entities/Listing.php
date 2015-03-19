@@ -13,4 +13,9 @@ class Listing extends Model {
         return $this->hasMany('Upsell');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('User');
+    }
+
 }

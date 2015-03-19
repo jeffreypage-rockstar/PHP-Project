@@ -12,22 +12,21 @@ class ListingController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param Requests\ListingGetAll $request
+	 * @param EloquentListingRepository $listing
 	 * @return Response
 	 */
-	public function index()
+	public function index(Requests\ListingGetAll $request, EloquentListingRepository $listing)
 	{
-		//
-	}
+		try {
+			// Create new listing
+			return $request->formatResponse($listing->getAll($request));
 
-	/**
-	 * Show the form for creating a new resource.
-	 * @return Response
-	 * @internal param ListingCreate $request
-	 * @internal param EloquentListingRepository $listing
-	 */
-	public function create()
-	{
-
+		} catch ( GenericException $e) {
+			\DB::rollback();
+		} catch ( \Exception $e) {
+			\DB::rollback();
+		}
 	}
 
 	/**
@@ -61,16 +60,6 @@ class ListingController extends Controller {
 		//
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
 
 	/**
 	 * Update the specified resource in storage.

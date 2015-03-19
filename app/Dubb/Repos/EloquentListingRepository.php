@@ -3,16 +3,19 @@
 use App\Dubb\Contracts\ListingInterface;
 use App\Entities\Listing;
 use App\Http\Requests\ListingCreate;
+use App\Http\Requests\ListingGetAll;
 use App\Upsell;
 use Illuminate\Support\Facades\DB;
 
 class EloquentListingRepository implements ListingInterface
 {
     protected $db;
+    protected $listing;
 
-    public function __construct(DB $db)
+    public function __construct(DB $db, Listing $listing)
     {
         $this->db = $db;
+        $this->listing = $listing;
     }
     /**
      * @param ListingCreate $request
@@ -39,5 +42,15 @@ class EloquentListingRepository implements ListingInterface
 
         return $listing;
 
+    }
+
+    /**
+     * @param ListingGetAll $request
+     * @return mixed
+     * @internal param Listing $listing
+     */
+    public function getAll(ListingGetAll $request)
+    {
+        return $this->listing->all()->with('user');
     }
 }
