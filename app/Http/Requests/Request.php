@@ -32,4 +32,20 @@ abstract class Request extends FormRequest {
 
         return \Response::make($api_response, $statusCode);
     }
+
+    public function forbiddenResponse()
+    {
+        $template = [
+            'error' => true,
+            'response' => 'Permission denied !'
+        ];
+        return \Response::make($template, 403);
+    }
+
+    public function response(array $errors)
+    {
+
+        return $this->formatResponse($this->formatErrors($this->getValidatorInstance()), true, 400);
+
+    }
 }

@@ -11,7 +11,7 @@ class ListingCreate extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -21,9 +21,25 @@ class ListingCreate extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			//
+		$rules = [
+			'name' => 'required',
+			'description' => 'sometimes| required',
+			'category_id' => 'required',
+			'user_id'	=> 'required',
+			'lat' => 'required',
+			'long' => 'required',
+			'upsell' => 'required'
 		];
+
+		if($this->request->has('upsell')) {
+			foreach($this->request->get('upsell') as $key=>$values) {
+				$rules['upsell'.$key.'description'] = 'required';
+				$rules['upsell'.$key.'price'] = 'required';
+			}
+		}
+
+		return $rules;
+
 	}
 
 }

@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers\Api\v1;
 
 use App\Dubb\Exceptions\GenericException;
 use App\Dubb\Repos\EloquentListingRepository;
@@ -6,7 +6,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\ListingCreate;
-use Illuminate\Http\Request;
 
 class ListingController extends Controller {
 
@@ -22,30 +21,31 @@ class ListingController extends Controller {
 
 	/**
 	 * Show the form for creating a new resource.
-	 *
-	 * @param ListingCreate $request
-	 * @param EloquentListingRepository $listing
 	 * @return Response
+	 * @internal param ListingCreate $request
+	 * @internal param EloquentListingRepository $listing
 	 */
-	public function create(ListingCreate $request, EloquentListingRepository $listing)
+	public function create()
 	{
-		try {
 
-		} catch ( GenericException $e) {
-
-		} catch ( \Exception $e) {
-
-		}
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @param ListingCreate $request
+	 * @param EloquentListingRepository $listing
 	 * @return Response
 	 */
-	public function store()
+	public function store(ListingCreate $request, EloquentListingRepository $listing)
 	{
-		//
+		try {
+			dd($request->all());
+		} catch ( GenericException $e) {
+
+		} catch ( \Exception $e) {
+
+		}
 	}
 
 	/**

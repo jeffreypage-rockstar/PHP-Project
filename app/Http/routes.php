@@ -22,6 +22,9 @@ Route::group(['prefix'=> 'api/v1'], function(){
 
 	// SignIn
 	Route::post('auth/signin', 'Api\v1\AuthController@signIn');
+
+	// Listing Resource
+	Route::resource('listing', 'Api\v1\ListingController');
 });
 
 

@@ -26,26 +26,11 @@ class SignUp extends Request {
 			'first'=>'required',
 			'last'=> 'required',
 			'username' => 'sometimes|required',
-			'password' => 'sometimes|required_without_all: facebook_token, twitter_token, gplus_token',
+			'password' => 'som|required_without_all: facebook_token, twitter_token, gplus_token',
 			'facebook_token' => 'sometimes|required_without_all: password, twitter_token, gplus_token',
 			'twitter_token' => 'sometimes|required_without_all: password, facebook_token, gplus_token',
 			'gplus_token' => 'sometimes|required_without_all: password, twitter_token, facebook_token',
 		];
 	}
 
-	public function forbiddenResponse()
-	{
-		$template = [
-			'error' => true,
-			'response' => 'Permission denied !'
-		];
-		return \Response::make($template, 403);
-	}
-
-	public function response(array $errors)
-	{
-
-		return $this->formatResponse($this->formatErrors($this->getValidatorInstance()), true, 400);
-
-	}
 }

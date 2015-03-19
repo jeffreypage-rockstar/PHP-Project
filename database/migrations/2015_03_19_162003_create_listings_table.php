@@ -21,7 +21,7 @@ class CreateListingsTable extends Migration {
 			$table->integer('user_id');
 			$table->string('lat');
 			$table->string('long');
-			$table->string('status');
+			$table->string('status')->default('pending');
 			$table->timestamps();
 		});
 	}
