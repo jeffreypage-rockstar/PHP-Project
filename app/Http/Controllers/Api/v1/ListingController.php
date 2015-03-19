@@ -40,11 +40,13 @@ class ListingController extends Controller {
 	public function store(ListingCreate $request, EloquentListingRepository $listing)
 	{
 		try {
-			dd($request->all());
+			// Create new listing
+			return $request->formatResponse($listing->create($request));
+
 		} catch ( GenericException $e) {
-
+			\DB::rollback();
 		} catch ( \Exception $e) {
-
+			\DB::rollback();
 		}
 	}
 
