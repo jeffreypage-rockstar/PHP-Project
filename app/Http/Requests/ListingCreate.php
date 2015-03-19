@@ -28,13 +28,13 @@ class ListingCreate extends Request {
 			'user_id'	=> 'required',
 			'lat' => 'required',
 			'long' => 'required',
-			'upsell' => 'required'
+			'upsell' => 'required|array'
 		];
 
-		if($this->request->has('upsell')) {
-			foreach($this->request->get('upsell') as $key=>$values) {
-				$rules['upsell'.$key.'description'] = 'required';
-				$rules['upsell'.$key.'price'] = 'required';
+		if($this->request->has('upsell') && is_array($this->request->get('upsell'))) {
+			for($i=0; $i<count($this->request->get('upsell'));$i++) {
+				$rules["upsell.{$i}.price"] = 'required';
+				$rules["upsell.{$i}.description"] = 'required';
 			}
 		}
 
