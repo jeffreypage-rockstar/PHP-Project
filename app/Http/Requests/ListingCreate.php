@@ -28,13 +28,14 @@ class ListingCreate extends Request {
 			'user_id'	=> 'required',
 			'lat' => 'required',
 			'long' => 'required',
-			'upsell' => 'required|array'
+			'addon' => 'required|array'
 		];
 
-		if($this->request->has('upsell') && is_array($this->request->get('upsell'))) {
-			for($i=0; $i<count($this->request->get('upsell'));$i++) {
-				$rules["upsell.{$i}.price"] = 'required';
-				$rules["upsell.{$i}.description"] = 'required';
+		if($this->request->has('addon') && is_array($this->request->get('addon'))) {
+			for($i=0; $i<count($this->request->get('addon'));$i++) {
+				$rules["addon.{$i}.id"] = 'sometimes|required';
+				$rules["addon.{$i}.price"] = 'required';
+				$rules["addon.{$i}.description"] = 'required';
 			}
 		}
 

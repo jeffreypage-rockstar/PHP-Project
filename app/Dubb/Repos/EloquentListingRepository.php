@@ -90,11 +90,18 @@ class EloquentListingRepository implements ListingInterface
     }
 
     /**
-     * @param ListingUpdate $request
+     * @param ListingUpdate $requestObj
      * @return mixed
      */
-    public function update(ListingUpdate $request)
+    public function update(ListingUpdate $requestObj)
     {
-        // TODO: Implement update() method.
+        $request = $requestObj->all();
+
+        $listing = $this->listing->update($request);
+
+        if (is_null($listing)) {
+            throw new GenericException('Error connecting');
+        }
+
     }
 }

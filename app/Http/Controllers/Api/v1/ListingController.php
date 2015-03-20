@@ -81,12 +81,25 @@ class ListingController extends Controller {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 * @param Requests\ListingUpdate $request
+	 * @param EloquentListingRepository $listing
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Requests\ListingUpdate $request, EloquentListingRepository $listing)
 	{
-		//
+		try {
+			// Create new listing
+			return $request->formatResponse($listing->update($request));
+
+		} catch ( GenericException $e) {
+			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
+		} catch ( \Exception $e) {
+			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the Listing API.', true, 400);
+		}
 	}
 
 	/**
