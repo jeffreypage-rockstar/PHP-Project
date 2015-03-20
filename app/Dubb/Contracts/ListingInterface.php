@@ -3,6 +3,8 @@
 use App\Entities\Listing;
 use App\Http\Requests\ListingCreate;
 use App\Http\Requests\ListingGetAll;
+use App\Http\Requests\ListingGetOne;
+use App\Http\Requests\ListingUpdate;
 
 interface ListingInterface {
 
@@ -19,4 +21,22 @@ interface ListingInterface {
      * @internal param Listing $listing
      */
     public function getAll(ListingGetAll $request);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function get($id);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id);
+
+    /**
+     * @param ListingUpdate $request
+     * @return mixed
+     */
+    public function update(ListingUpdate $request);
 }

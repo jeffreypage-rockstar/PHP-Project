@@ -26,7 +26,7 @@ class ListingController extends Controller {
 			return $request->formatResponse([$e->getMessage()], true, 400);
 		} catch ( \Exception $e) {
 			\Log::debug($e);
-			return $request->formatResponse('Unable to connect to the AuthController@signUp.', true, 400);
+			return $request->formatResponse('Unable to connect to the Listing API.', true, 400);
 		}
 	}
 
@@ -49,19 +49,32 @@ class ListingController extends Controller {
 		} catch ( \Exception $e) {
 			\DB::rollback();
 			\Log::debug($e);
-			return $request->formatResponse('Unable to connect to the AuthController@signUp.', true, 400);
+			return $request->formatResponse('Unable to connect to the Listing API.', true, 400);
 		}
 	}
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param $id
+	 * @param Requests\ListingGetOne $request
+	 * @param EloquentListingRepository $listing
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($id, Requests\ListingGetOne $request, EloquentListingRepository $listing)
 	{
-		//
+		try {
+			// Create new listing
+			return $request->formatResponse($listing->get($id));
+
+		} catch ( GenericException $e) {
+			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
+		} catch ( \Exception $e) {
+			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the Listing API.', true, 400);
+		}
 	}
 
 
@@ -79,12 +92,25 @@ class ListingController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 * @param Requests\ListingGetOne $request
+	 * @param EloquentListingRepository $listing
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, Requests\ListingGetOne $request, EloquentListingRepository $listing)
 	{
-		//
+		try {
+			// Create new listing
+			return $request->formatResponse($listing->delete($id));
+
+		} catch ( GenericException $e) {
+			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
+		} catch ( \Exception $e) {
+			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the Listing API.', true, 400);
+		}
 	}
 
 }
