@@ -9,7 +9,7 @@ github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github
 
 # Server Configuration
 
-hoscoretname        = "vaprobash.dev"
+hostname        = "local.dubb.co"
 
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
@@ -30,7 +30,7 @@ server_timezone  = "EST"
 
 # Database Configuration
 mysql_root_password   = "DubbDev01"   # We'll assume user "root"
-mysql_version         = "5.5"    # Options: 5.5 | 5.6
+mysql_version         = "5.6"    # Options: 5.5 | 5.6
 mysql_enable_remote   = "false"  # remote access enabled when true
 pgsql_root_password   = "root"   # We'll assume user "root"
 mongo_enable_remote   = "false"  # remote access enabled when true
@@ -59,7 +59,7 @@ composer_packages     = [        # List any global Composer packages that you wa
 # Default web server document root
 # Symfony's public directory is assumed "web"
 # Laravel's public directory is assumed "public"
-public_folder         = "/vagrant"
+public_folder         = "/vagrant/api/public"
 
 laravel_root_folder   = "/vagrant/laravel" # Where to install Laravel. Will `composer install` if a composer.json file exists
 laravel_version       = "latest-stable" # If you need a specific version of Laravel, set it here
@@ -85,7 +85,7 @@ Vagrant.configure("2") do |config|
   # Set server to Ubuntu 14.04
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.define "Vaprobash" do |vapro|
+  config.vm.define "DubbVM" do |vapro|
   end
 
   if Vagrant.has_plugin?("vagrant-hostmanager")
@@ -105,7 +105,7 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8000
 
   # Use NFS for the shared folder
-  #config.vm.synced_folder "./../dubb-php-apis/", "/vagrant/api",
+  #config.vm.synced_folder ".", "/vagrant/api",
   #          id: "dubb-apis",
   #          :nfs => true,
   #          :mount_options => ['nolock,vers=3,udp,noatime']
@@ -113,7 +113,7 @@ Vagrant.configure("2") do |config|
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
 
-    vb.name = "Vaprobash"
+    vb.name = "DubbVM"
 
     # Set server cpus
     vb.customize ["modifyvm", :id, "--cpus", server_cpus]
@@ -196,10 +196,10 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision Apache Base
-   config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
 
   # Provision Nginx Base
-  # config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
+   config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
 
 
   ####
