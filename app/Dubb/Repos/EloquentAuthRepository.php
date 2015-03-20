@@ -69,7 +69,6 @@ class EloquentAuthRepository implements AuthInterface
     /**
      * @param SignUp $requestObj
      * @return mixed|static
-     * @internal param SignUp $request
      */
     public function signUpIfNotExisting(SignUp $requestObj)
     {
@@ -100,7 +99,6 @@ class EloquentAuthRepository implements AuthInterface
      * @param SignIn $requestObj
      * @return mixed
      * @throws GenericException
-     * @internal param Request|SignIn $request
      */
     public function authenticate(SignIn $requestObj)
     {

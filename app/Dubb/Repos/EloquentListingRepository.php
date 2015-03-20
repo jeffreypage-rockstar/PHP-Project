@@ -4,7 +4,7 @@ use App\Dubb\Contracts\ListingInterface;
 use App\Entities\Listing;
 use App\Http\Requests\ListingCreate;
 use App\Http\Requests\ListingGetAll;
-use App\Upsell;
+use App\Entities\Upsell;
 use Illuminate\Support\Facades\DB;
 
 class EloquentListingRepository implements ListingInterface
@@ -47,10 +47,9 @@ class EloquentListingRepository implements ListingInterface
     /**
      * @param ListingGetAll $request
      * @return mixed
-     * @internal param Listing $listing
      */
     public function getAll(ListingGetAll $request)
     {
-        return $this->listing->all()->with('user');
+        return Listing::all()->load('user');
     }
 }

@@ -29,11 +29,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $hidden = ['password', 'remember_token', 'id'];
 
 	public function listing()
 	{
-		return $this->hasMany('Listing');
+		return $this->hasMany('App\Entities\Listing');
 	}
 
 }

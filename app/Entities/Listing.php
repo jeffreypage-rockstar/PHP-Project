@@ -15,7 +15,7 @@ class Listing extends Model {
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\Entities\User', 'user_id')->select(['id', 'email', 'first', 'last', 'is_pro', 'verified', 'seller_location_verified']);
     }
 
 }

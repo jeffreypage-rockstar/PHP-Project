@@ -12,7 +12,7 @@
 */
 
 
-Route::group(['prefix'=> 'api/v1'], function(){
+Route::group(['prefix'=> 'v1'], function(){
 
 	// Obtain Oauth Token
 	Route::post('oauth/token', 'Api\v1\AuthController@getToken');
@@ -24,7 +24,7 @@ Route::group(['prefix'=> 'api/v1'], function(){
 	Route::post('auth/signin', 'Api\v1\AuthController@signIn');
 
 	// Listing Resource
-	Route::resource('listing', 'Api\v1\ListingController');
+	Route::resource('listing', 'Api\v1\ListingController', ['only'=> 'index', 'destroy', 'store', 'show']);
 });
 
 

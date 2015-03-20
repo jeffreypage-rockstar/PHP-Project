@@ -23,9 +23,10 @@ class ListingController extends Controller {
 			return $request->formatResponse($listing->getAll($request));
 
 		} catch ( GenericException $e) {
-			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
 		} catch ( \Exception $e) {
-			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the AuthController@signUp.', true, 400);
 		}
 	}
 
@@ -44,8 +45,11 @@ class ListingController extends Controller {
 
 		} catch ( GenericException $e) {
 			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
 		} catch ( \Exception $e) {
 			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the AuthController@signUp.', true, 400);
 		}
 	}
 
