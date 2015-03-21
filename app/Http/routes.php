@@ -27,7 +27,7 @@ Route::group(['prefix'=> 'v1'], function(){
 	Route::resource('listing', 'Api\v1\ListingController', ['except'=> ['create', 'edit']]);
 
 	// User Resource
-	Route::resource('user', 'Api\v1\UserController', ['except'=> ['create', 'edit']]);
+	Route::resource('user', 'Api\v1\UserController', ['except'=> ['create', 'edit', 'store']]);
 
 });
 

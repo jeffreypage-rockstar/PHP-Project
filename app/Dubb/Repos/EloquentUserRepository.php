@@ -1,6 +1,7 @@
 <?php namespace App\Dubb\Repos;
 
 use App\Dubb\Contracts\UserInterface;
+use App\Dubb\Exceptions\GenericException;
 use App\Entities\User;
 use App\Http\Requests\GetUsers;
 use App\Http\Requests\UpdateUser;
@@ -14,13 +15,21 @@ class EloquentUserRepository implements UserInterface
     {
         $this->user = $user;
     }
+
     /**
      * @param $id
      * @return mixed
+     * @throws GenericException
      */
     public function get($id)
     {
+        $user = $this->user->find($id);
 
+        if (is_null($user)) {
+            throw new GenericException('User with ID:'.$id. ' not found.');
+        }
+
+        return $user;
     }
 
     /**
@@ -46,18 +55,37 @@ class EloquentUserRepository implements UserInterface
     /**
      * @param $id
      * @return mixed
+     * @throws GenericException
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $deleted = $this->user->destroy($id) > 0;
+
+        if (! $deleted) {
+            throw new GenericException('User with ID '. $id. ' not available.');
+        }
+
+        return $deleted;
     }
 
     /**
-     * @param UpdateUser $request
+     * @param UpdateUser $requestObj
      * @return mixed
+     * @throws GenericException
      */
-    public function update(UpdateUser $request)
+    public function update(UpdateUser $requestObj)
     {
-        // TODO: Implement update() method.
+        $request = $requestObj->all();
+        $user = $this->user->find($request['id']);
+
+        if (is_null($user)) {
+            throw new GenericException('Error Updating Listing');
+        }
+
+        foreach($request as $key=>$val) {
+            $user->setAttribute($key, $val);
+        }
+
+        return $user->save();
     }
 }

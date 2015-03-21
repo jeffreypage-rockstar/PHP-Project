@@ -5,6 +5,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\GetUsers;
+use App\Http\Requests\UpdateUser;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
@@ -40,36 +41,52 @@ class UserController extends Controller {
 		}
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 * @param GetUsers $request
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($id, GetUsers $request)
 	{
-		//
+		try {
+			// Create new listing
+			return $request->formatResponse($this->user->get($id));
+
+		} catch ( GenericException $e) {
+
+			return $request->formatResponse([$e->getMessage()], true, 400);
+
+		} catch ( \Exception $e) {
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to User API.', true, 400);
+		}
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 * @param UpdateUser $request
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, UpdateUser $request)
 	{
-		//
+		try {
+			// update existing user
+			$request->merge(['id' => $id]);
+			return $request->formatResponse($this->user->update($request));
+
+		} catch ( GenericException $e) {
+			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
+		} catch ( \Exception $e) {
+			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the User API.', true, 400);
+		}
 	}
 
 	/**

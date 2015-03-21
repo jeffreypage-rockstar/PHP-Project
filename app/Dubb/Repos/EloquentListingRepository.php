@@ -75,13 +75,13 @@ class EloquentListingRepository implements ListingInterface
      */
     public function get($id)
     {
-        $user = $this->user->find($id);
+        $listing = $this->listing->find($id);
 
-        if (is_null($user)) {
-            throw new GenericException('user with ID:'.$id. ' not found.');
+        if (is_null($listing)) {
+            throw new GenericException('Listing with ID:'.$id. ' not found.');
         }
 
-        return $user;
+        return $listing;
     }
 
 
@@ -110,7 +110,7 @@ class EloquentListingRepository implements ListingInterface
     public function update(ListingUpdate $requestObj)
     {
         $request = $requestObj->all();
-        $listing = $this->listing->find($requestObj->getId());
+        $listing = $this->listing->find($request['id']);
 
         if (is_null($listing)) {
             throw new GenericException('Error Updating Listing');

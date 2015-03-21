@@ -90,7 +90,7 @@ class ListingController extends Controller {
 	{
 		try {
 			// update existing listing
-			$request->setId($id);
+			$request->merge(['id' => $id]);
 			return $request->formatResponse($listing->update($request));
 
 		} catch ( GenericException $e) {
