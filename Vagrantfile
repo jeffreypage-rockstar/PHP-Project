@@ -17,7 +17,7 @@ hostname        = "local.dubb.co"
 #   10.0.0.1    - 10.255.255.254
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
-server_ip             = "g"
+server_ip             = "192.168.22.10"
 server_cpus           = "2"   # Cores
 server_memory         = "1048" # MB
 server_swap           = "768" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
