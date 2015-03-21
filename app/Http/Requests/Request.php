@@ -1,6 +1,7 @@
 <?php namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Pagination\Paginator;
 
 abstract class Request extends FormRequest {
 
@@ -22,6 +23,14 @@ abstract class Request extends FormRequest {
 
         if (count($errors) > 0) {
             $api_response['errors'] = $errors;
+        }
+
+        if (isset($response['paginator_data'])) {
+            $api_response['response'] = $response['paginator_data'];
+        }
+
+        if (isset($response['paginator'])) {
+            $api_response['paginator'] = $response['paginator'];
         }
 
         // Since this is an error response log the error.
@@ -72,12 +81,33 @@ abstract class Request extends FormRequest {
         return $model;
     }
 
+    /**
+     * @param $model
+     * @return mixed
+     */
     public function paginateResponse($model)
     {
         $request = $this->request->all();
         $page = (isset($request['page'])) ? $request['page']: 1;
         $limit = (isset($request['limit'])) ? $request['limit']: 20;
 
-//        $model->take($limit)->
+        $skip = ($page-1 < 1) ? $limit: $page*$limit;
+
+        $paginator = $model->paginate($limit);
+
+        $pager = [
+            'per_page' => (int) $paginator->perPage(),
+            'current_page' => $paginator->currentPage(),
+            'next_page' => ($paginator->hasMorePages())?($paginator->currentPage() + 1): null,
+            'prev_page' => ($paginator->currentPage() - 1) < 1 ? null : ($paginator->currentPage() - 1),
+            'from' => $paginator->firstItem(),
+            'to' => $paginator->lastItem()
+        ];
+
+        $items['paginator_data'] = $paginator->items();
+        $items['paginator'] = $pager;
+
+        return $items;
+
     }
 }

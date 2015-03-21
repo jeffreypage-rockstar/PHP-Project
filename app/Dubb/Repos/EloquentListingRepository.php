@@ -49,7 +49,7 @@ class EloquentListingRepository implements ListingInterface
     }
 
     /**
-     * @param ListingGetAll $request
+     * @param ListingGetAll $requestObj
      * @return mixed
      */
     public function getAll(ListingGetAll $requestObj)
@@ -57,13 +57,15 @@ class EloquentListingRepository implements ListingInterface
         $request = $requestObj->all();
 
         // get listing module
-        $listing = $this->listing->all();
+        $listing = $this->listing;
 
         // if requesting related models add them
         $listing = $requestObj->loadRelatedModels($listing);
 
-        return $listing;
+        // Get the paginated result
+        $listing = $requestObj->paginateResponse($listing);
 
+        return $listing;
     }
 
     /**
