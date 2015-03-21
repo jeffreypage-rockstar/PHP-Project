@@ -118,11 +118,22 @@ class EloquentListingRepository implements ListingInterface
 
         foreach($request as $key=>$val) {
             if ($key == 'addon') {
+                foreach($val as $addon_row) {
+                    $addon_row['listing_id'] = $requestObj->getId();
+                    $addon = $this->addon->find($addon_row['id']);
+                    if (is_null($addon)) {
+                        throw new GenericException('Invalid addon ID: ' . $addon_row['id']);
+                    }
+
+                    $addon->update($addon_row);
+                }
                 continue;
             }
 
             $listing->setAttribute($key, $val);
         }
+
+
 
         return $listing->save();
     }
