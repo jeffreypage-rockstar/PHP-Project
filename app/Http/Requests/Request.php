@@ -70,11 +70,11 @@ abstract class Request extends FormRequest {
      */
     public function loadRelatedModels($model)
     {
-        $request = $this->request->all();
+        $request = $this->all();
         // Why using the Input facade , when the content type header is json the request object will not see the query
         // string params. But its available as Input param (trough $_GET )
-        if (isset($request['with']) || \Input::has('with')) {
-            return $model->with(explode(',', \Input::get('with')));
+        if (isset($request['with'])) {
+            return $model->with(explode(',', $request['with']));
 
         }
 
@@ -87,7 +87,7 @@ abstract class Request extends FormRequest {
      */
     public function paginateResponse($model)
     {
-        $request = $this->request->all();
+        $request = $this->all();
         $page = (isset($request['page'])) ? $request['page']: 1;
         $limit = (isset($request['limit'])) ? $request['limit']: 20;
 

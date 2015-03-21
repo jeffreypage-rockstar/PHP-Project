@@ -75,13 +75,13 @@ class EloquentListingRepository implements ListingInterface
      */
     public function get($id)
     {
-        $listing = $this->listing->find($id);
+        $user = $this->user->find($id);
 
-        if (is_null($listing)) {
-            throw new GenericException('Listing with ID:'.$id. ' not found.');
+        if (is_null($user)) {
+            throw new GenericException('user with ID:'.$id. ' not found.');
         }
 
-        return $listing->load('user');
+        return $user;
     }
 
 

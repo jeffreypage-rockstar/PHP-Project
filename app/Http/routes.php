@@ -24,7 +24,11 @@ Route::group(['prefix'=> 'v1'], function(){
 	Route::post('auth/signin', 'Api\v1\AuthController@signIn');
 
 	// Listing Resource
-	Route::resource('listing', 'Api\v1\ListingController', ['except'=> 'create']);
+	Route::resource('listing', 'Api\v1\ListingController', ['except'=> ['create', 'edit']]);
+
+	// User Resource
+	Route::resource('user', 'Api\v1\UserController', ['except'=> ['create', 'edit']]);
+
 });
 
 
