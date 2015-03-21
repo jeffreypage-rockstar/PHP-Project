@@ -92,12 +92,24 @@ class UserController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 * @param GetUsers $request
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, GetUsers $request)
 	{
-		//
+		try {
+			// Create new user
+			return $request->formatResponse($this->user->delete($id));
+
+		} catch ( GenericException $e) {
+			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
+		} catch ( \Exception $e) {
+			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the Listing API.', true, 400);
+		}
 	}
 
 }
