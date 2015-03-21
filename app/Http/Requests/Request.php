@@ -51,7 +51,6 @@ abstract class Request extends FormRequest {
      */
     public function response(array $errors)
     {
-
         return $this->formatResponse($this->formatErrors($this->getValidatorInstance()), true, 400);
 
     }
