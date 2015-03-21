@@ -10,10 +10,10 @@ interface ListingInterface {
 
 
     /**
-     * @param ListingCreate $request
+     * @param ListingCreate $requestObj
      * @return mixed
      */
-    public function create(ListingCreate $request);
+    public function create(ListingCreate $requestObj);
 
     /**
      * @param ListingGetAll $request

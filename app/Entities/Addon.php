@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Upsell extends Model {
+class Addon extends Model {
 
     protected $fillable = ['price', 'description', 'listing_id'];
 	public function listing()

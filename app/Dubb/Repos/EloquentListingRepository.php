@@ -5,7 +5,7 @@ use App\Dubb\Exceptions\GenericException;
 use App\Entities\Listing;
 use App\Http\Requests\ListingCreate;
 use App\Http\Requests\ListingGetAll;
-use App\Entities\Upsell;
+use App\Entities\Addon;
 use App\Http\Requests\ListingUpdate;
 use Illuminate\Support\Facades\DB;
 
@@ -13,31 +13,33 @@ class EloquentListingRepository implements ListingInterface
 {
     protected $db;
     protected $listing;
+    protected $addon;
 
-    public function __construct(DB $db, Listing $listing)
+    public function __construct(DB $db, Listing $listing, Addon $addon)
     {
         $this->db = $db;
         $this->listing = $listing;
+        $this->addon = $addon;
     }
     /**
-     * @param ListingCreate $request
+     * @param ListingCreate $requestObj
      * @return mixed
      */
-    public function create(ListingCreate $request)
+    public function create(ListingCreate $requestObj)
     {
         // Begin Transasction
         DB::beginTransaction();
 
         //Create the listing
-        $listing = Listing::create($request->all());
-
-        $upsell = $request->get('upsell');
+        $listing = Listing::create($requestObj->all());
+        $request = $requestObj->all();
+        $addons = $request['addon'];
 
 
         // Save the upsells
-        foreach($upsell as $pricing) {
+        foreach($addons as $pricing) {
             $pricing['listing_id']=$listing->id;
-            $price = Upsell::create($pricing);
+            $this->addon->create($pricing);
         }
 
         DB::commit();
@@ -92,6 +94,7 @@ class EloquentListingRepository implements ListingInterface
     /**
      * @param ListingUpdate $requestObj
      * @return mixed
+     * @throws GenericException
      */
     public function update(ListingUpdate $requestObj)
     {

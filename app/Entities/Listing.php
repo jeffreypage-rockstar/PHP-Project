@@ -10,7 +10,7 @@ class Listing extends Model {
 
 	public function upsell()
     {
-        return $this->hasMany('Upsell');
+        return $this->hasMany('Addon');
     }
 
     public function user()
