@@ -110,12 +110,21 @@ class EloquentListingRepository implements ListingInterface
     public function update(ListingUpdate $requestObj)
     {
         $request = $requestObj->all();
-
-        $listing = $this->listing->update($request);
+        $listing = $this->listing->find($requestObj->getId());
 
         if (is_null($listing)) {
-            throw new GenericException('Error connecting');
+            throw new GenericException('Error Updating Listing');
         }
 
+        foreach($request as $key=>$val) {
+            if ($key == 'addon') {
+                continue;
+            }
+
+            $listing->setAttribute($key, $val);
+        }
+
+        return $listing->save();
     }
+
 }

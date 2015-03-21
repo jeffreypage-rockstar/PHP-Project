@@ -89,7 +89,8 @@ class ListingController extends Controller {
 	public function update($id, Requests\ListingUpdate $request, EloquentListingRepository $listing)
 	{
 		try {
-			// Create new listing
+			// update existing listing
+			$request->setId($id);
 			return $request->formatResponse($listing->update($request));
 
 		} catch ( GenericException $e) {

@@ -4,6 +4,8 @@ use App\Http\Requests\Request;
 
 class ListingUpdate extends Request {
 
+	protected $id;
+
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -12,6 +14,22 @@ class ListingUpdate extends Request {
 	public function authorize()
 	{
 		return true;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param mixed $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
 	}
 
 	/**
