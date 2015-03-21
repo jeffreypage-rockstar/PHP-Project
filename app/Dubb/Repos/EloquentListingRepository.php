@@ -54,7 +54,7 @@ class EloquentListingRepository implements ListingInterface
      */
     public function getAll(ListingGetAll $request)
     {
-        return $this->listing->all()->load('user');
+        return $this->listing->all()->load('user', 'addon');
     }
 
     /**

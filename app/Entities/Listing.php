@@ -8,9 +8,9 @@ class Listing extends Model {
         'name', 'description', 'category_id', 'user_id', 'lat', 'long', 'status'
     ];
 
-	public function upsell()
+	public function addon()
     {
-        return $this->hasMany('Addon');
+        return $this->hasMany('App\Entities\Addon')->select(['description', 'price', 'listing_id']);
     }
 
     public function user()
