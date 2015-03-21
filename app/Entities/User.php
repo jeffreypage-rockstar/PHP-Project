@@ -33,7 +33,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function listing()
 	{
-		return $this->hasMany('App\Entities\Listing');
+		return $this->hasMany('App\Entities\Listing', 'user_id');
 	}
 
 }
