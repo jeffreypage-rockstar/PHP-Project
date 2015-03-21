@@ -33,6 +33,9 @@ abstract class Request extends FormRequest {
         return \Response::make($api_response, $statusCode);
     }
 
+    /**
+     * @return mixed
+     */
     public function forbiddenResponse()
     {
         $template = [
@@ -42,10 +45,40 @@ abstract class Request extends FormRequest {
         return \Response::make($template, 403);
     }
 
+    /**
+     * @param array $errors
+     * @return array
+     */
     public function response(array $errors)
     {
 
         return $this->formatResponse($this->formatErrors($this->getValidatorInstance()), true, 400);
 
+    }
+
+    /**
+     * @param $model
+     * @return mixed
+     */
+    public function loadRelatedModels($model)
+    {
+        $request = $this->request->all();
+
+        if (isset($request['with'])) {
+
+            return $model->load(explode(',', $request['with']));
+
+        }
+
+        return $model;
+    }
+
+    public function paginateResponse($model)
+    {
+        $request = $this->request->all();
+        $page = (isset($request['page'])) ? $request['page']: 1;
+        $limit = (isset($request['limit'])) ? $request['limit']: 20;
+
+//        $model->take($limit)->
     }
 }

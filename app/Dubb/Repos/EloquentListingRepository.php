@@ -52,9 +52,18 @@ class EloquentListingRepository implements ListingInterface
      * @param ListingGetAll $request
      * @return mixed
      */
-    public function getAll(ListingGetAll $request)
+    public function getAll(ListingGetAll $requestObj)
     {
-        return $this->listing->all()->load('user', 'addon');
+        $request = $requestObj->all();
+
+        // get listing module
+        $listing = $this->listing->all();
+
+        // if requesting related models add them
+        $listing = $requestObj->loadRelatedModels($listing);
+
+        return $listing;
+
     }
 
     /**
