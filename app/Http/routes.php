@@ -35,6 +35,8 @@ Route::group(['prefix'=> 'v1'], function(){
 	//Tag Rsource
 	Route::resource('tag', 'Api\v1\TagController', ['except'=> ['create', 'edit']]);
 
+	//Asset Resource
+	Route::resource('asset', 'Api\v1\AssetController', ['except'=> ['create', 'edit']]);
 });
 
 
