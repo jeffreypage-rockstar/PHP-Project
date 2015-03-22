@@ -29,6 +29,8 @@ Route::group(['prefix'=> 'v1'], function(){
 	// User Resource
 	Route::resource('user', 'Api\v1\UserController', ['except'=> ['create', 'edit', 'store']]);
 
+	Route::resource('category', 'Api\v1\CategoryController', ['except'=> ['create', 'edit']]);
+
 });
 
 

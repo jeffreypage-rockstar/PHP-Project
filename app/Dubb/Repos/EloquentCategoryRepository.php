@@ -1,10 +1,12 @@
 <?php namespace App\Dubb\Repos;
 
 use App\Dubb\Contracts\CategoryInterface;
+use App\Dubb\Exceptions\GenericException;
 use App\Entities\Category;
 use App\Http\Requests\CreateCategory;
 use App\Http\Requests\GetCategories;
 use App\Http\Requests\UpdateCategory;
+use Illuminate\Support\Facades\DB;
 
 class EloquentCategoryRepository implements CategoryInterface
 {

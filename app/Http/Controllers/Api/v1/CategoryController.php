@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Api\v1;
 
+use App\Dubb\Exceptions\GenericException;
 use App\Dubb\Repos\EloquentCategoryRepository;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
