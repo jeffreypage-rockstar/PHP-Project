@@ -38,8 +38,6 @@ class EloquentUserRepository implements UserInterface
      */
     public function getAll(GetUsers $requestObj)
     {
-        $request = $requestObj->all();
-
         // get listing module
         $user = $this->user;
 
@@ -78,8 +76,9 @@ class EloquentUserRepository implements UserInterface
         $request = $requestObj->all();
         $user = $this->user->find($request['id']);
 
+
         if (is_null($user)) {
-            throw new GenericException('Error Updating Listing');
+            throw new GenericException('Error Updating User');
         }
 
         foreach($request as $key=>$val) {

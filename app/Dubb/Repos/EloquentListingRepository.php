@@ -54,8 +54,6 @@ class EloquentListingRepository implements ListingInterface
      */
     public function getAll(ListingGetAll $requestObj)
     {
-        $request = $requestObj->all();
-
         // get listing module
         $listing = $this->listing;
 
@@ -92,7 +90,6 @@ class EloquentListingRepository implements ListingInterface
      */
     public function delete($id)
     {
-
         $deleted = $this->listing->destroy($id) > 0;
 
         if (! $deleted) {
