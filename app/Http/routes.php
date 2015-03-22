@@ -29,7 +29,11 @@ Route::group(['prefix'=> 'v1'], function(){
 	// User Resource
 	Route::resource('user', 'Api\v1\UserController', ['except'=> ['create', 'edit', 'store']]);
 
+	//Category Resource
 	Route::resource('category', 'Api\v1\CategoryController', ['except'=> ['create', 'edit']]);
+
+	//Tag Rsource
+	Route::resource('tag', 'Api\v1\TagController', ['except'=> ['create', 'edit']]);
 
 });
 
