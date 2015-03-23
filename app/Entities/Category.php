@@ -11,4 +11,13 @@ class Category extends Model {
 		return $this->hasMany('App\Entities\CategoryEdges', 'from_id', 'id');
 	}
 
+	public function listing()
+	{
+		return $this->hasMany('App\Entities\Listing', 'category_id');
+	}
+
+	public function nestedlisting()
+	{
+		return $this->hasManyThrough('App\Entities\Listing', 'App\Entities\CategoryEdges', 'from_id', 'category_id');
+	}
 }

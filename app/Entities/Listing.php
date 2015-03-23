@@ -18,4 +18,8 @@ class Listing extends Model {
         return $this->belongsTo('App\Entities\User', 'user_id')->select(['id', 'email', 'first', 'last', 'is_pro', 'verified', 'seller_location_verified']);
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\Entities\Category', 'category_id');
+    }
 }

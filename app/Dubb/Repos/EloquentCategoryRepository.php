@@ -1,6 +1,6 @@
 <?php namespace App\Dubb\Repos;
 
-use App\CategoryEdges;
+use App\Entities\CategoryEdges;
 use App\Dubb\Contracts\CategoryInterface;
 use App\Dubb\Exceptions\GenericException;
 use App\Entities\Category;
