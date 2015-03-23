@@ -37,6 +37,12 @@ Route::group(['prefix'=> 'v1'], function(){
 
 	//Asset Resource
 	Route::resource('asset', 'Api\v1\AssetController', ['except'=> ['create', 'edit']]);
+
+	// Get all parent categories
+	Route::get('categories', 'Api\v1\CategoryController@getParentCategories');
+
+	// Get all categories with subcategories
+	Route::get('categories/all', 'Api\v1\CategoryController@getCatAndSubCats');
 });
 
 

@@ -1,5 +1,6 @@
 <?php namespace App\Dubb\Repos;
 
+use App\CategoryEdges;
 use App\Dubb\Contracts\CategoryInterface;
 use App\Dubb\Exceptions\GenericException;
 use App\Entities\Category;
@@ -11,10 +12,12 @@ use Illuminate\Support\Facades\DB;
 class EloquentCategoryRepository implements CategoryInterface
 {
     protected $category;
+    protected $edges;
 
-    public function __construct(Category $category)
+    public function __construct(Category $category, CategoryEdges $edges)
     {
         $this->category = $category;
+        $this->edges = $edges;
     }
 
     /**
@@ -104,5 +107,42 @@ class EloquentCategoryRepository implements CategoryInterface
         }
 
         return $category->save();
+    }
+
+    /**
+     * @param bool $subcategories
+     * @return mixed
+     */
+    public function getAllParentCategories($subcategories = false)
+    {
+        $sql = "SELECT c.id,c.name,c.description from categories as c WHERE c.id IN (SELECT DISTINCT(from_id) FROM category_edges)";
+
+        $parents = \DB::select(\DB::raw($sql));
+
+        if ( ! $subcategories) {
+            return $parents;
+        }
+
+        $result = [];
+        foreach($parents as $cat) {
+
+           $sql_subcats = "SELECT id,name,description FROM categories " .
+            "WHERE id in (select distinct(to_id) from category_edges " .
+            "WHERE from_id={$cat->id} AND from_id <> to_id)";
+
+            $cat->subcategories = \DB::select(\DB::raw($sql_subcats));
+
+            array_push($result, $cat);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllSubCategories()
+    {
+
     }
 }

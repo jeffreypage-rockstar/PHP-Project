@@ -135,4 +135,14 @@ class CategoryController extends Controller {
 		}
 	}
 
+	public function getParentCategories()
+	{
+		return $this->category->getAllParentCategories();
+	}
+
+	public function getCatAndSubCats()
+	{
+		return $this->category->getAllParentCategories(true);
+	}
+
 }

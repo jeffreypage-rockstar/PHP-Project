@@ -35,4 +35,15 @@ interface CategoryInterface
      * @return mixed
      */
     public function update(UpdateCategory $request);
+
+    /**
+     * @param bool $subcategories
+     * @return mixed
+     */
+    public function getAllParentCategories($subcategories = false);
+
+    /**
+     * @return mixed
+     */
+    public function getAllSubCategories();
 }
