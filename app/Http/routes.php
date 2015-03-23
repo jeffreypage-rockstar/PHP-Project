@@ -43,6 +43,8 @@ Route::group(['prefix'=> 'v1'], function(){
 
 	// Get all categories with subcategories
 	Route::get('categories/all', 'Api\v1\CategoryController@getCatAndSubCats');
+
+	Route::get('category/{id}/listing', 'Api\v1\CategoryController@getCategoryListings');
 });
 
 

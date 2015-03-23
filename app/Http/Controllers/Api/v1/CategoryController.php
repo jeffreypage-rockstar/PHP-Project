@@ -162,6 +162,7 @@ class CategoryController extends Controller {
      */
 	public function getCatAndSubCats(GetCategories $request)
 	{
+
 		try {
 
 			//Get All
@@ -177,4 +178,20 @@ class CategoryController extends Controller {
 		}
 	}
 
+	public function getCategoryListings($id, GetCategories $request)
+	{
+		try {
+
+			//Get All
+			return $request->formatResponse($this->category->getListingsByCategory($id, $request));
+
+		} catch ( GenericException $e) {
+
+			return $request->formatResponse([$e->getMessage()], true, 400);
+
+		} catch ( \Exception $e) {
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to Category API.', true, 400);
+		}
+	}
 }

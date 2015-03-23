@@ -159,10 +159,28 @@ class EloquentCategoryRepository implements CategoryInterface
     }
 
     /**
+     * @param $id
+     * @param GetCategories $requestObj
      * @return mixed
      */
-    public function getAllSubCategories()
+    public function getListingsByCategory($id, GetCategories $requestObj)
     {
+       // $sql = "SELECT name, description FROM listing where category_id IN ( SELECT to_id FROM category_edges WHERE from_id={$id})"
 
+        $listings =  DB::table('listings')
+                ->whereExists(function($query) use($id)
+                {
+                    $query->select('to_id')
+                        ->from('category_edges')
+                        ->whereRaw('category_edges.from_id ='.$id);
+                });
+
+        // if requesting related models add them
+        $listings = $requestObj->loadRelatedModels($listings);
+
+        // Get the paginated result
+        $listings = $requestObj->paginateResponse($listings);
+
+        return $listings;
     }
 }

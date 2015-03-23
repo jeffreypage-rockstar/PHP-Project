@@ -44,7 +44,11 @@ interface CategoryInterface
     public function getAllParentCategories(GetCategories $request, $subcategories = false);
 
     /**
+     * @param $id
+     * @param GetCategories $request
      * @return mixed
      */
-    public function getAllSubCategories();
+    public function getListingsByCategory($id, GetCategories $request);
+
+
 }
