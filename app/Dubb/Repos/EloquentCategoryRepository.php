@@ -110,17 +110,27 @@ class EloquentCategoryRepository implements CategoryInterface
     }
 
     /**
+     * @param $request
      * @param bool $subcategories
      * @return mixed
      */
-    public function getAllParentCategories($subcategories = false)
+    public function getAllParentCategories(GetCategories $request, $subcategories = false)
     {
         $sql = "SELECT c.id,c.name,c.description from categories as c WHERE c.id IN (SELECT DISTINCT(from_id) FROM category_edges)";
 
         $parents = \DB::select(\DB::raw($sql));
-
         if ( ! $subcategories) {
-            return $parents;
+            $pager = [
+                'per_page' => (int) count($parents),
+                'current_page' => 1,
+                'next_page' =>null,
+                'prev_page' => null,
+                'from' => 1,
+                'to' => count($parents)
+            ];
+            $items['paginator_data'] = $parents;
+            $items['paginator'] = $pager;
+            return $items;
         }
 
         $result = [];
@@ -135,7 +145,17 @@ class EloquentCategoryRepository implements CategoryInterface
             array_push($result, $cat);
         }
 
-        return $result;
+        $pager = [
+            'per_page' => (int) count($result),
+            'current_page' => 1,
+            'next_page' =>null,
+            'prev_page' => null,
+            'from' => 1,
+            'to' => count($result)
+        ];
+        $items['paginator_data'] = $result;
+        $items['paginator'] = $pager;
+        return $items;
     }
 
     /**

@@ -135,14 +135,46 @@ class CategoryController extends Controller {
 		}
 	}
 
-	public function getParentCategories()
+	/**
+	 * @param GetCategories $request
+	 * @return array
+     */
+	public function getParentCategories(GetCategories $request)
 	{
-		return $this->category->getAllParentCategories();
+		try {
+
+			//Get All
+			return $request->formatResponse($this->category->getAllParentCategories($request));
+
+		} catch ( GenericException $e) {
+
+			return $request->formatResponse([$e->getMessage()], true, 400);
+
+		} catch ( \Exception $e) {
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to Category API.', true, 400);
+		}
 	}
 
-	public function getCatAndSubCats()
+	/**
+	 * @param GetCategories $request
+	 * @return mixed
+     */
+	public function getCatAndSubCats(GetCategories $request)
 	{
-		return $this->category->getAllParentCategories(true);
+		try {
+
+			//Get All
+			return $request->formatResponse($this->category->getAllParentCategories($request, true));
+
+		} catch ( GenericException $e) {
+
+			return $request->formatResponse([$e->getMessage()], true, 400);
+
+		} catch ( \Exception $e) {
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to Category API.', true, 400);
+		}
 	}
 
 }

@@ -37,10 +37,11 @@ interface CategoryInterface
     public function update(UpdateCategory $request);
 
     /**
+     * @param GetCategories $request
      * @param bool $subcategories
      * @return mixed
      */
-    public function getAllParentCategories($subcategories = false);
+    public function getAllParentCategories(GetCategories $request, $subcategories = false);
 
     /**
      * @return mixed
