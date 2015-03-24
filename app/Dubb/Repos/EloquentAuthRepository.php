@@ -91,11 +91,7 @@ class EloquentAuthRepository implements AuthInterface
         // create new user
         $request['password'] = bcrypt($request['password']);
 
-        $user = new User;
-        foreach($request as $key=>$val){
-            $user->setAttribute($key, $val);
-        }
-        $user->save();
+        $user = User::create($request);
 
         return $user;
 
