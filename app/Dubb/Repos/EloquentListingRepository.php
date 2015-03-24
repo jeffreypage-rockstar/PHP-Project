@@ -33,6 +33,7 @@ class EloquentListingRepository implements ListingInterface
         //Create the listing
         $listing = Listing::create($requestObj->all());
         $request = $requestObj->all();
+        $request = $this->converterMiKm($request);
         $addons = $request['addon'];
 
 
@@ -107,6 +108,9 @@ class EloquentListingRepository implements ListingInterface
     public function update(ListingUpdate $requestObj)
     {
         $request = $requestObj->all();
+
+        $request = $this->converterMiKm($request);
+
         $listing = $this->listing->find($request['id']);
 
         if (is_null($listing)) {
@@ -135,6 +139,23 @@ class EloquentListingRepository implements ListingInterface
 
 
         return $listing->save();
+    }
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    protected function converterMiKm($request)
+    {
+        if (isset($request['radius_mi'])) {
+            $request['radius_km'] = (double)$request['radius_mi'] / 0.62137;
+        }
+
+        if (isset($request['radius_km'])) {
+            $request['radius_mi'] = (double)$request['radius_km'] * 0.62137;
+            return $request;
+        }
+        return $request;
     }
 
 }
