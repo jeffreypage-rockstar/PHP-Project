@@ -53,7 +53,7 @@ class ListingUpdate extends Request {
 
 		if($this->request->has('addon') && is_array($request['addon'])) {
 			for($i=0; $i<count($request['addon']);$i++) {
-				$rules["addon.{$i}.id"] = 'required';
+				$rules["addon.{$i}.id"] = 'sometimes|required';
 				$rules["addon.{$i}.price"] = 'sometimes|required';
 				$rules["addon.{$i}.description"] = 'sometimes|required';
 			}

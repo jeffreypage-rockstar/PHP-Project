@@ -111,11 +111,15 @@ abstract class Request extends FormRequest {
     }
 
     /**
-     * @param $column
-     * @param string $order
+     * @param $model
+     * @return
      */
-    public function sortBy($model, $column = 'created_at', $order = 'desc')
+    public function sortBy($model)
     {
+        $request = $this->all();
+        $column = (isset($request['sortby'])) ? $request['sortby']: 'created_at';
+        $order = (isset($request['order'])) ? $request['order']: 'desc';
+
         return $model->orderBy($column, $order);
     }
 }
