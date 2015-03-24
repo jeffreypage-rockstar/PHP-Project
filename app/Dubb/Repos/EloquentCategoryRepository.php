@@ -167,16 +167,23 @@ class EloquentCategoryRepository implements CategoryInterface
     {
        // $sql = "SELECT name, description FROM listing where category_id IN ( SELECT to_id FROM category_edges WHERE from_id={$id})"
 
-        $listings =  DB::table('listings')
-                ->whereExists(function($query) use($id)
-                {
-                    $query->select('to_id')
-                        ->from('category_edges')
-                        ->whereRaw('category_edges.from_id ='.$id);
-                });
+        $cols = [
+            'listings.name', 'listings.description', 'listings.lat', 'listings.long', 'listings.category_id',
+            'listings.status', 'listings.created_at', 'users.username', 'users.first',
+            'users.last', 'users.zip', 'users.city', 'users.country_code', 'users.country',
+            'users.is_pro', 'users.seller_location_verified', 'users.verified',
+            'users.response_time_hours', 'users.email'
+        ];
+        $category_ids =array_values($this->edges->where('from_id',$id)->get(['to_id'])->toArray());
+        if ( ! in_array($id, ($category_ids))) {
+            array_push($category_ids, $id);
+        }
+        $listings =  \DB::table('listings')
+            ->join('users', 'listings.user_id', '=', 'users.id')
+            ->whereIn('listings.category_id', $category_ids)
+            ->select($cols);
 
-        // if requesting related models add them
-        $listings = $requestObj->loadRelatedModels($listings);
+        $listings = $requestObj->sortBy($listings);
 
         // Get the paginated result
         $listings = $requestObj->paginateResponse($listings);

@@ -108,6 +108,14 @@ abstract class Request extends FormRequest {
         $items['paginator'] = $pager;
 
         return $items;
+    }
 
+    /**
+     * @param $column
+     * @param string $order
+     */
+    public function sortBy($model, $column = 'created_at', $order = 'desc')
+    {
+        return $model->orderBy($column, $order);
     }
 }
