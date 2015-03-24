@@ -5,12 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 class Listing extends Model {
 
     protected $fillable = [
-        'name', 'description', 'category_id', 'user_id', 'lat', 'long', 'status'
+        'name', 'description', 'category_id', 'user_id', 'lat', 'long', 'status', 'instructions', 'radius_mi',
+        'radius_km'
     ];
 
 	public function addon()
     {
-        return $this->hasMany('App\Entities\Addon')->select(['description', 'price', 'listing_id']);
+        return $this->hasMany('App\Entities\Addon')->select(['id', 'description', 'price', 'listing_id', 'sequence']);
     }
 
     public function user()
