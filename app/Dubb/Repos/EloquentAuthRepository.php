@@ -78,12 +78,10 @@ class EloquentAuthRepository implements AuthInterface
         // get the email from the request
         $user = null;
 
-        if (isset($request['email'])){
-            $user = $this->user->where('email', $request['email'])->with('preferences')->first();
-        }
-
-        if(isset($request['username'])) {
-            $user = $this->user->where('username', $request['username'])->with('preferences')->first();
+        if (isset($request['email']) && isset($request['username'])){
+            $user = $this->user->where('email', $request['email'])
+                ->orWhere('username', $request['username'])
+                ->with('preferences')->first();
         }
 
 
@@ -116,15 +114,21 @@ class EloquentAuthRepository implements AuthInterface
      */
     public function authenticate(SignIn $requestObj)
     {
-       $request = $requestObj->all();
+        $request = $requestObj->all();
 
-       $user = $this->user->where('email', $request['email'])->first();
+        $user = null;
+        if(isset($request['email'])) {
+            $user = $this->user->where('email', $request['email'])->first();
+        }
+        if(isset($request['username'])) {
+            $user = $this->user->where('username', $request['username'])->first();
+        }
 
-       if ($user && Hash::check($request['password'], $user->password)) {
+        if ($user && Hash::check($request['password'], $user->password)) {
 
            return $user;
-       }
+        }
 
-       throw new ApiException('Authentication Failed');
+        throw new GenericException('Authentication Failed');
     }
 }

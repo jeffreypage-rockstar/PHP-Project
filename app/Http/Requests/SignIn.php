@@ -21,7 +21,8 @@ class SignIn extends Request {
 	public function rules()
 	{
 		return [
-			'email'=> 'required|email',
+			'email'=> 'required_without:username|email',
+			'username' => 'required_without:email|alpha_num',
 			'password' => 'required'
 		];
 	}
