@@ -46,7 +46,7 @@ class EloquentAuthRepository implements AuthInterface
             }
         }
 
-        throw new GenericException('Email address already registered.');
+        throw new GenericException('Email/Username already registered.');
     }
 
     /**
@@ -76,10 +76,16 @@ class EloquentAuthRepository implements AuthInterface
         $request = $requestObj->all();
 
         // get the email from the request
-        $email = $request['email'];
+        $user = null;
 
-        // check if a user exists
-        $user = $this->user->where('email', $email)->first();
+        if (isset($request['email'])){
+            $user = $this->user->where('email', $request['email'])->first();
+        }
+
+        if(isset($request['username'])) {
+            $user = $this->user->where('username', $request['username'])->first();
+        }
+
 
         if ($user) {
             // User already registered

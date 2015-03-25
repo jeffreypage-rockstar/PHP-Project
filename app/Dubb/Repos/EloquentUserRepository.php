@@ -78,13 +78,17 @@ class EloquentUserRepository implements UserInterface
 
 
         if (is_null($user)) {
-            throw new GenericException('Error Updating User');
+            throw new GenericException('User not found with ID: '.$request['id']);
         }
-
+        if (isset($request['password'])) {
+            $request['password'] = \Hash::make($request['password']);
+        }
         foreach($request as $key=>$val) {
             $user->setAttribute($key, $val);
         }
 
-        return $user->save();
+        $user->save();
+
+        return $user;
     }
 }

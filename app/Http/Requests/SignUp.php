@@ -22,10 +22,10 @@ class SignUp extends Request {
 	public function rules()
 	{
 		return [
-			'email'=>'required|email',
+			'email'=>'required_without:username|email',
 			'first'=>'required',
 			'last'=> 'required',
-			'username' => 'sometimes|required',
+			'username' => 'required_without:email|alpha',
 			'password' => 'sometimes|required_without_all: facebook_token, twitter_token, gplus_token',
 			'facebook_token' => 'sometimes|required_without_all: password, twitter_token, gplus_token',
 			'twitter_token' => 'sometimes|required_without_all: password, facebook_token, gplus_token',

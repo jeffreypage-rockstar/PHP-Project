@@ -22,7 +22,14 @@ class UpdateUser extends Request {
 	public function rules()
 	{
 		return [
-			//
+			'email'=>'sometimes|required|email',
+			'first'=>'sometimes|required',
+			'last'=> 'sometimes|required',
+			'username' => 'sometimes|required|alpha_num',
+			'password' => 'sometimes|required',
+			'facebook_token' => 'sometimes|required',
+			'twitter_token' => 'sometimes|required',
+			'gplus_token' =>'sometimes|required',
 		];
 	}
 
