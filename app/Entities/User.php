@@ -41,4 +41,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasMany('App\Entities\Listing', 'user_id');
 	}
 
+	public function preferences()
+	{
+		return $this->hasMany('App\Entities\Preferences', 'user_id')->select(['id', 'key', 'value', 'user_id']);
+	}
 }

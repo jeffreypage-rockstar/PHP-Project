@@ -79,11 +79,11 @@ class EloquentAuthRepository implements AuthInterface
         $user = null;
 
         if (isset($request['email'])){
-            $user = $this->user->where('email', $request['email'])->first();
+            $user = $this->user->where('email', $request['email'])->with('preferences')->first();
         }
 
         if(isset($request['username'])) {
-            $user = $this->user->where('username', $request['username'])->first();
+            $user = $this->user->where('username', $request['username'])->with('preferences')->first();
         }
 
 
@@ -99,6 +99,11 @@ class EloquentAuthRepository implements AuthInterface
 
         $user = User::create($request);
 
+        if (isset($request['preferences'])) {
+            foreach($request['preferences'] as $pref) {
+
+            }
+        }
         return $user;
 
     }

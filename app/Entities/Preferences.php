@@ -4,6 +4,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Preferences extends Model {
 
-	//
+    protected $fillable = [
+        'user_id', 'key', 'value'
+    ];
 
+    protected $hidden = [
+        'user_id'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Entities\User');
+
+    }
 }

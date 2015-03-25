@@ -25,7 +25,7 @@ class SignUp extends Request {
 			'email'=>'required_without:username|email',
 			'first'=>'required',
 			'last'=> 'required',
-			'username' => 'required_without:email|alpha',
+			'username' => 'required_without:email|alpha_num',
 			'password' => 'sometimes|required_without_all: facebook_token, twitter_token, gplus_token',
 			'facebook_token' => 'sometimes|required_without_all: password, twitter_token, gplus_token',
 			'twitter_token' => 'sometimes|required_without_all: password, facebook_token, gplus_token',
