@@ -1,6 +1,6 @@
 ##Dubb.co
 
-Dubb.co Platform.
+Dubb.co Platform..
 
 ### License
 
