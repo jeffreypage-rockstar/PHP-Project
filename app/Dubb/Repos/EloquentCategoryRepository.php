@@ -120,7 +120,7 @@ class EloquentCategoryRepository implements CategoryInterface
      */
     public function getAllParentCategories(GetCategories $request, $subcategories = false)
     {
-        $sql = "SELECT c.id,c.name,c.description from categories as c WHERE c.id IN (SELECT DISTINCT(from_id) FROM category_edges)";
+        $sql = "SELECT c.id,c.name,c.description from category as c WHERE c.id IN (SELECT DISTINCT(from_id) FROM category_edge)";
 
         $parents = \DB::select(\DB::raw($sql));
         if ( ! $subcategories) {
@@ -140,8 +140,8 @@ class EloquentCategoryRepository implements CategoryInterface
         $result = [];
         foreach($parents as $cat) {
 
-           $sql_subcats = "SELECT id,name,description FROM categories " .
-            "WHERE id in (select distinct(to_id) from category_edges " .
+           $sql_subcats = "SELECT id,name,description FROM category " .
+            "WHERE id in (select distinct(to_id) from category_edge " .
             "WHERE from_id={$cat->id} AND from_id <> to_id)";
 
             $cat->subcategories = \DB::select(\DB::raw($sql_subcats));

@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryEdges extends Model {
 
+    protected $table = 'category_edge';
 
     public function parent()
     {

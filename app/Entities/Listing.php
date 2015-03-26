@@ -4,6 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Listing extends Model {
 
+    protected $table = 'listing';
+
     protected $fillable = [
         'name', 'description', 'category_id', 'user_id', 'lat', 'long', 'status', 'instructions', 'radius_mi',
         'radius_km'

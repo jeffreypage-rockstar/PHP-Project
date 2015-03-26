@@ -3,6 +3,7 @@
 use App\Dubb\Contracts\ListingInterface;
 use App\Dubb\Exceptions\GenericException;
 use App\Entities\Listing;
+use App\Entities\Tag;
 use App\Http\Requests\GetUsers;
 use App\Http\Requests\ListingCreate;
 use App\Http\Requests\ListingGetAll;
@@ -16,12 +17,16 @@ class EloquentListingRepository implements ListingInterface
     protected $db;
     protected $listing;
     protected $addon;
+    protected $tag;
 
-    public function __construct(DB $db, Listing $listing, Addon $addon)
+
+    public function __construct(DB $db, Listing $listing, Addon $addon, Tag $tag)
     {
         $this->db = $db;
         $this->listing = $listing;
         $this->addon = $addon;
+        $this->tag = $tag;
+
     }
     /**
      * @param ListingCreate $requestObj
@@ -33,17 +38,14 @@ class EloquentListingRepository implements ListingInterface
         DB::beginTransaction();
 
         //Create the listing
-        $listing = Listing::create($requestObj->all());
+        $listing = $this->listing->create($requestObj->all());
         $request = $requestObj->all();
         $request = $this->converterMiKm($request);
-        $addons = $request['addon'];
 
+        $this->saveAddons($request, $listing);
 
-        // Save the upsells
-        foreach($addons as $pricing) {
-            $pricing['listing_id']=$listing->id;
-            $this->addon->create($pricing);
-        }
+        $this->saveTags($request, $listing);
+
 
         DB::commit();
 
@@ -162,6 +164,35 @@ class EloquentListingRepository implements ListingInterface
             return $request;
         }
         return $request;
+    }
+
+    /**
+     * @param $request
+     * @param $listing
+     */
+    protected function saveAddons($request, $listing)
+    {
+        $addons = $request['addon'];
+
+        // Save the upsells
+        foreach ($addons as $pricing) {
+            $pricing['listing_id'] = $listing->id;
+            $this->addon->create($pricing);
+        }
+    }
+
+    /**
+     * @param $request
+     * @param $listing
+     */
+    protected function saveTags($request, $listing)
+    {
+        $tags = $request['tags'];
+        foreach ($tags as $tag) {
+            $tag['listing_id'] = $listing->id;
+            $tag = $this->tag->create($tag);
+
+        }
     }
 
 }

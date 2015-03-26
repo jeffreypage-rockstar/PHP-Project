@@ -4,6 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Preferences extends Model {
 
+    protected $table = 'preference';
+
     protected $fillable = [
         'user_id', 'key', 'value'
     ];
