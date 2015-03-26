@@ -22,18 +22,22 @@ class EloquentCategoryRepository implements CategoryInterface
 
     /**
      * @param $id
+     * @param GetCategories $requestObj
      * @return mixed
      * @throws GenericException
      */
-    public function get($id)
+    public function get($id, GetCategories $requestObj)
     {
-        $category = $this->category->find($id);
+        $category = $this->category;
 
         if (is_null($category)) {
             throw new GenericException('Category with ID:'.$id. ' not found.');
         }
 
-        return $category;
+
+        $category = $requestObj->loadRelatedModels($category);
+
+        return $category->find($id);
     }
 
     /**

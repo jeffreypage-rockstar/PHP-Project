@@ -8,9 +8,10 @@ interface CategoryInterface
 {
     /**
      * @param $id
+     * @param GetCategories $request
      * @return mixed
      */
-    public function get($id);
+    public function get($id, GetCategories $request);
 
     /**
      * @param GetCategories $request

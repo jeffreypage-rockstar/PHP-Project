@@ -76,7 +76,7 @@ class CategoryController extends Controller {
 	{
 		try {
 			// Create new listing
-			return $request->formatResponse($this->category->get($id));
+			return $request->formatResponse($this->category->get($id, $request));
 
 		} catch ( GenericException $e) {
 
