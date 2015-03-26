@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTag;
 use App\Http\Requests\GetTags;
+use App\Http\Requests\ListingTags;
 use App\Http\Requests\UpdateTag;
 
 
@@ -133,6 +134,15 @@ class TagController extends Controller {
 			\Log::debug($e);
 			return $request->formatResponse('Unable to connect to the Tag API.', true, 400);
 		}
+	}
+
+
+	/**
+	 * @param ListingTags $request
+     */
+	public function syncTagsForListing(ListingTags $request)
+	{
+
 	}
 
 }

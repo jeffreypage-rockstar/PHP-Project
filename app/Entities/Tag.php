@@ -13,4 +13,8 @@ class Tag extends Model {
         return $this->belongsTo('App\Entities\User');
     }
 
+    public function listings()
+    {
+        return $this->belongsToMany('App\Entities\Listing','listing_tag');
+    }
 }

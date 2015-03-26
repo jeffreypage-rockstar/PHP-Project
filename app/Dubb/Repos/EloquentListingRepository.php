@@ -44,9 +44,6 @@ class EloquentListingRepository implements ListingInterface
 
         $this->saveAddons($request, $listing);
 
-        $this->saveTags($request, $listing);
-
-
         DB::commit();
 
         return $listing;
@@ -178,20 +175,6 @@ class EloquentListingRepository implements ListingInterface
         foreach ($addons as $pricing) {
             $pricing['listing_id'] = $listing->id;
             $this->addon->create($pricing);
-        }
-    }
-
-    /**
-     * @param $request
-     * @param $listing
-     */
-    protected function saveTags($request, $listing)
-    {
-        $tags = $request['tags'];
-        foreach ($tags as $tag) {
-            $tag['listing_id'] = $listing->id;
-            $tag = $this->tag->create($tag);
-
         }
     }
 

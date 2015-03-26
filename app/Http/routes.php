@@ -35,6 +35,8 @@ Route::group(['prefix'=> 'v1'], function(){
 	//Tag Rsource
 	Route::resource('tag', 'Api\v1\TagController', ['except'=> ['create', 'edit']]);
 
+	Route::post('listing/tags', 'Api\v1\TagController@syncTagsForListing');
+
 	//Asset Resource
 	Route::resource('asset', 'Api\v1\AssetController', ['except'=> ['create', 'edit']]);
 

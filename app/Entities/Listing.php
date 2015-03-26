@@ -25,4 +25,9 @@ class Listing extends Model {
     {
         return $this->belongsTo('App\Entities\Category', 'category_id');
     }
+
+    public function tag()
+    {
+        return $this->belongsToMany('App\Entities\Tag', 'listing_tag');
+    }
 }
