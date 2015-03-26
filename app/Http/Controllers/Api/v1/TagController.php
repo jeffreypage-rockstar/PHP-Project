@@ -139,10 +139,22 @@ class TagController extends Controller {
 
 	/**
 	 * @param ListingTags $request
-     */
+	 * @return array
+	 */
 	public function syncTagsForListing(ListingTags $request)
 	{
+		try {
+			// Create new user
+			return $request->formatResponse($this->tag->syncTags($request));
 
+		} catch ( GenericException $e) {
+			\DB::rollback();
+			return $request->formatResponse([$e->getMessage()], true, 400);
+		} catch ( \Exception $e) {
+			\DB::rollback();
+			\Log::debug($e);
+			return $request->formatResponse('Unable to connect to the Tag API.', true, 400);
+		}
 	}
 
 }

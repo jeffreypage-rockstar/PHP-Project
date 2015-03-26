@@ -5,6 +5,7 @@ use App\Dubb\Exceptions\GenericException;
 use App\Entities\Tag;
 use App\Http\Requests\CreateTag;
 use App\Http\Requests\GetTags;
+use App\Http\Requests\ListingTags;
 use App\Http\Requests\UpdateTag;
 use Illuminate\Support\Facades\DB;
 
@@ -104,5 +105,19 @@ class EloquentTagRepository implements TagInterface
         }
 
         return $tag->save();
+    }
+
+    public function syncTags(ListingTags $requestObj)
+    {
+        $request = $requestObj->all();
+        foreach(explode(',', $request['tag_ids']) as $id) {
+            $tag = $this->tag->find($id);
+            if ($tag === null) {
+                continue;
+            }
+            $tag->listings()->sync([$request['listing_id']]);
+        }
+
+        return true;
     }
 }

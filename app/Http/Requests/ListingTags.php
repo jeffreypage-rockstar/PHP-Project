@@ -21,10 +21,13 @@ class ListingTags extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			'listing_id'=> 'required|exists:listings,id',
-			'name' => 'required|alpha'
+
+		$rule = [
+			'listing_id'=> 'required|exists:listing,id',
+			'tag_ids' => 'required'
 		];
+
+		return $rule;
 	}
 
 }

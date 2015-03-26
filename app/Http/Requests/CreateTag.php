@@ -22,7 +22,7 @@ class CreateTag extends Request {
 	public function rules()
 	{
 		return [
-			//
+			'name'=>'required|unique:tag,name'
 		];
 	}
 
