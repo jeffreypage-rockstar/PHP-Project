@@ -21,15 +21,17 @@ class EloquentUserRepository implements UserInterface
      * @return mixed
      * @throws GenericException
      */
-    public function get($id)
+    public function get($id, GetUsers $requestObj)
     {
-        $user = $this->user->find($id);
+        $user = $this->user;
 
         if (is_null($user)) {
             throw new GenericException('User with ID:'.$id. ' not found.');
         }
 
-        return $user;
+        $user = $requestObj->loadRelatedModels($user);
+
+        return $user->find($id);
     }
 
     /**

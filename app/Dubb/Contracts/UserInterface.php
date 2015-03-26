@@ -8,9 +8,10 @@ interface UserInterface
 
     /**
      * @param $id
+     * @param GetUsers $request
      * @return mixed
      */
-    public function get($id);
+    public function get($id, GetUsers $request);
 
     /**
      * @param GetUsers $request

@@ -54,7 +54,7 @@ class UserController extends Controller {
 	{
 		try {
 			// Create new listing
-			return $request->formatResponse($this->user->get($id));
+			return $request->formatResponse($this->user->get($id, $request));
 
 		} catch ( GenericException $e) {
 
