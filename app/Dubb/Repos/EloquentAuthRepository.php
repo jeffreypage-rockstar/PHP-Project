@@ -2,6 +2,7 @@
 
 use App\Dubb\Exceptions\ApiException;
 use App\Dubb\Exceptions\GenericException;
+use App\Entities\Preferences;
 use App\Entities\User;
 use App\Dubb\Contracts\AuthInterface;
 use App\Dubb\Contracts\Client;
@@ -13,53 +14,18 @@ class EloquentAuthRepository implements AuthInterface
 {
 
     protected $user;
+    protected $preference;
 
-    /**
-     *  Private and Protected methods on top.
-     */
-    /**
-     * @param $request
-     * @param $user
-     * @return mixed
-     * @throws GenericException
-     */
-    private function _loginAttempt($request, $user)
+    public function __construct(User $user, Preferences $preferences)
     {
-        if (isset($request['password']) && Hash::check($request['password'], $user->password)) {
-            return $user;
-        }
-        foreach (['facebook_token', 'gplus_token', 'twitter_token'] as $token) {
-
-            // I have a token
-            if (isset($request[$token]) && ($request[$token] == $user->getAttribute($token))) {
-                // social login attempt successful
-                return $user;
-            }
-
-            // I have a new token, update the token
-            if (isset($request[$token]) && ($user->getAttribute($token) != '' || $user->getAttribute($token) == null)) {
-
-                $user->setAttribute($token, $request[$token]);
-                $user->save();
-
-                return $user;
-            }
-        }
-
-        throw new GenericException('Email/Username already registered.');
+        $this->user = $user;
+        $this->preference = $preferences;
     }
 
     /**
      *  All Public Methods Next
      */
 
-    /**
-     * @param User $user
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     public function getOauthToken(Client $client)
     {
@@ -80,7 +46,6 @@ class EloquentAuthRepository implements AuthInterface
 
         if (isset($request['email']) && isset($request['username'])){
             $user = $this->user->where('email', $request['email'])
-                ->orWhere('username', $request['username'])
                 ->with('preferences')->first();
         }
 
@@ -97,11 +62,8 @@ class EloquentAuthRepository implements AuthInterface
 
         $user = User::create($request);
 
-        if (isset($request['preferences'])) {
-            foreach($request['preferences'] as $pref) {
+        $this->savePreferences($request, $user);
 
-            }
-        }
         return $user;
 
     }
@@ -130,5 +92,76 @@ class EloquentAuthRepository implements AuthInterface
         }
 
         throw new GenericException('Authentication Failed');
+    }
+
+    /**
+     * @param $request
+     * @param $user
+     */
+    protected function savePreferences($request, $user)
+    {
+        if (isset($request['preferences'])) {
+            foreach ($request['preferences'] as $pref) {
+               $pref['user_id'] = $user->id;
+               // delete if selected to delete
+                if (isset($pref['delete']) && $pref['delete'] && isset($pref['id'])) {
+                    $p = $this->preference->destroy($pref['id']);
+
+                    if ($p > 0) {
+                        continue;
+                    }
+                }
+               $preference = isset($pref['id'])? $this->preference->find($pref['id']):null;
+                if ($preference === null) {
+                    // check if the same key exists for the user , if so retrieve that record.
+                    $preference = $this->preference->where('user_id', $pref['user_id'])->where('key', $pref['key'])->first();
+                }
+               if ($preference !== null) {
+                    foreach($pref as $key=>$val) {
+                       $preference->setAttribute($key, $val);
+                   }
+                   $preference->save();
+                   continue;
+               }
+               $this->preference->create($pref);
+            }
+        }
+    }
+
+    /**
+     *  Private and Protected methods on bottom.
+     */
+    /**
+     * @param $request
+     * @param $user
+     * @return mixed
+     * @throws GenericException
+     */
+    private function _loginAttempt($request, $user)
+    {
+        if (isset($request['password']) && Hash::check($request['password'], $user->password)) {
+            $this->savePreferences($request, $user);
+            return $user;
+        }
+        foreach (['facebook_token', 'gplus_token', 'twitter_token'] as $token) {
+
+            // I have a token
+            if (isset($request[$token]) && ($request[$token] == $user->getAttribute($token))) {
+                // social login attempt successful
+                $this->savePreferences($request, $user);
+                return $user;
+            }
+
+            // I have a new token, update the token
+            if (isset($request[$token]) && ($user->getAttribute($token) != '' || $user->getAttribute($token) == null)) {
+
+                $user->setAttribute($token, $request[$token]);
+                $user->save();
+                $this->savePreferences($request, $user);
+                return $user;
+            }
+        }
+
+        throw new GenericException('Email/Username already registered.');
     }
 }
