@@ -18,6 +18,7 @@ class EloquentUserRepository implements UserInterface
 
     /**
      * @param $id
+     * @param GetUsers $requestObj
      * @return mixed
      * @throws GenericException
      */

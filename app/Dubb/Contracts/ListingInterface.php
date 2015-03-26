@@ -24,9 +24,10 @@ interface ListingInterface {
 
     /**
      * @param $id
+     * @param ListingGetOne $request
      * @return mixed
      */
-    public function get($id);
+    public function get($id, ListingGetOne $request);
 
     /**
      * @param $id

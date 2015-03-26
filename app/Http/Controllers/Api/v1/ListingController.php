@@ -65,7 +65,7 @@ class ListingController extends Controller {
 	{
 		try {
 			// Create new listing
-			return $request->formatResponse($listing->get($id));
+			return $request->formatResponse($listing->get($id, $request));
 
 		} catch ( GenericException $e) {
 			\DB::rollback();

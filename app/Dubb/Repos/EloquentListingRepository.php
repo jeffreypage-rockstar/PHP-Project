@@ -3,9 +3,11 @@
 use App\Dubb\Contracts\ListingInterface;
 use App\Dubb\Exceptions\GenericException;
 use App\Entities\Listing;
+use App\Http\Requests\GetUsers;
 use App\Http\Requests\ListingCreate;
 use App\Http\Requests\ListingGetAll;
 use App\Entities\Addon;
+use App\Http\Requests\ListingGetOne;
 use App\Http\Requests\ListingUpdate;
 use Illuminate\Support\Facades\DB;
 
@@ -69,18 +71,22 @@ class EloquentListingRepository implements ListingInterface
 
     /**
      * @param $id
+     * @param ListingGetOne $requestObj
      * @return $this
      * @throws GenericException
      */
-    public function get($id)
+    public function get($id, ListingGetOne $requestObj)
     {
-        $listing = $this->listing->find($id);
+        $listing = $this->listing;
 
         if (is_null($listing)) {
             throw new GenericException('Listing with ID:'.$id. ' not found.');
         }
 
-        return $listing;
+
+        $listing = $requestObj->loadRelatedModels($listing);
+
+        return $listing->find($id);
     }
 
 
