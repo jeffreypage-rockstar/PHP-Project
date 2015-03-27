@@ -2,6 +2,7 @@
 
 use App\Dubb\Contracts\TagInterface;
 use App\Dubb\Exceptions\GenericException;
+use App\Entities\Listing;
 use App\Entities\Tag;
 use App\Http\Requests\CreateTag;
 use App\Http\Requests\GetTags;
@@ -110,14 +111,16 @@ class EloquentTagRepository implements TagInterface
     public function syncTags(ListingTags $requestObj)
     {
         $request = $requestObj->all();
-        foreach(explode(',', $request['tag_ids']) as $id) {
-            $tag = $this->tag->find($id);
-            if ($tag === null) {
-                continue;
-            }
-            $tag->listings()->sync([$request['listing_id']]);
-        }
+        $tag_ids = explode(',', $request['tag_ids']);
 
-        return true;
+        foreach($tag_ids as $id) {
+            // if any one of the ids fail it will fail.
+            if ( $this->tag->find($id) === null) {
+                throw new GenericException('Tag ID : '.$id.' is invalid.');
+            }
+        }
+        $listing = Listing::find($request['listing_id'])->first();
+
+        return $listing->tag()->sync($tag_ids);
     }
 }
